@@ -1,4 +1,4 @@
-﻿$url = "https://{company}.sharepoint.com/sites/{site}"
+$url = "https://{company}.sharepoint.com/sites/{site}"
 
 $password = "password"
 
@@ -13,15 +13,15 @@ $appcredentials = New-Object System.Management.Automation.PSCredential($upn, $pa
 Stop-Service -Name servicename
 
 
-
+#compress file with winrar in backgorund
 $file_path = "C:\$((Get-Date).ToString('yyyy-MM-dd'))"
 
-$argList = @("a",  ('"'+$file_path+'"'), ('"'+"C:\G2Software"+'"'))
+$argList = @("a",  ('"'+$file_path+'"'), ('"'+"C:\{folder}"+'"'))
 
 Start-Process -FilePath "C:\Program Files\Winrar\winrar.exe" -ArgumentList $argList -NoNewWindow -Wait
 
 
-
+#connect to SP online
 Connect-PnPOnline $url -Credentials $appcredentials
 
 $file_path = $file_path+'.rar'
@@ -34,7 +34,7 @@ Remove-Item -Path $file_path -Force
 
 
 
-#Retención(21 días)--------------------------------------------------------------------------------------------------------------
+#Retention(21 days)--------------------------------------------------------------------------------------------------------------
 
 $items = Get-PnPListItem -List "Documentos compartidos"  | Where {$_.FileSystemObjectType -eq "File"}
 
